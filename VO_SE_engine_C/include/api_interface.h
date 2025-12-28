@@ -30,6 +30,11 @@ API_EXPORT void set_frequency(float hz);
  */
 API_EXPORT void prepare_phoneme(const char* lyric);
 
+// iOSのSwiftからも呼び出しやすい、最もシンプルな命令
+void vose_talk_simple(const char* text, float speed, float pitch_scale);
+
+
+
 /**
  * レンダリング（書き出し）の実行
  * output_path: 保存先のファイルパス
