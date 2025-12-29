@@ -32,6 +32,25 @@ class MainWindow(QMainWindow):
         super().__init__(parent)
         self.setWindowTitle("VO-SE Pro")
         self.setGeometry(100, 100, 700, 400)
+
+
+             # --- 改造点：最上部にテキスト入力UIを追加 ---
+        self.input_layout = QHBoxLayout()
+        self.text_input = QLineEdit()
+        self.text_input.setPlaceholderText("喋らせたい文章を入力してEnter...")
+        self.text_input.returnPressed.connect(self.on_generate_talk)
+        
+        self.btn_gen = QPushButton("音声生成")
+        self.btn_gen.clicked.connect(self.on_generate_talk)
+        
+        self.input_layout.addWidget(self.text_input)
+        self.input_layout.addWidget(self.btn_gen)
+        
+        # メインレイアウトの先頭に追加
+        self.main_layout.insertLayout(0, self.input_layout)
+
+
+      
         
         self.vo_se_engine = VO_SE_Engine()
         self.pitch_data = [] # self.pitch_data をここで初期化
@@ -213,6 +232,22 @@ class MainWindow(QMainWindow):
         edit_menu = self.menuBar().addMenu("編集(&E)")
         edit_menu.addAction(self.copy_action)
         edit_menu.addAction(self.paste_action)
+
+
+     def on_generate_talk(self):
+        text = self.text_input.text()
+        if not text: return
+        
+        # 1. 解析の実行
+        events = self.analyzer.analyze_to_events(text)
+        
+        # 2. 既存のTimelineWidgetへ反映
+        # 既存の set_notes メソッドを呼び出し
+        self.timeline_widget.set_notes(events)
+        self.timeline_widget.update()
+        
+        print(f"VO-SE Talk: {len(events)}個の音素を展開しました。")
+  
 
     @Slot()
     def on_play_pause_toggled(self):
