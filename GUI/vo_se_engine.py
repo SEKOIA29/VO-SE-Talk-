@@ -77,6 +77,12 @@ class VoSeEngineWrapper:
         hz = self.midi_to_hz(midi_note)
         print(f"DEBUG: 周波数 {hz:.2f}Hz をエンジンに送信")
         self.lib.set_frequency(hz)
+    def set_talk_pitch(self, start_hz, end_hz):
+    """C言語エンジンに対して滑らかなピッチ変化を命令する"""
+    # 既存の engine.dll に追加した関数を呼び出す
+    self.lib.set_pitch_range(ctypes.c_float(start_hz), ctypes.c_float(end_hz))
+
+    
 
     def play_preview(self):
         self.lib.play_note()
