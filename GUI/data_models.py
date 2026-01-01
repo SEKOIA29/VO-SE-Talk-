@@ -106,4 +106,22 @@ class CharacterInfo:
     audio_dir: str    # "audio_data/aoi" などのパス
 
 
+@dataclasses.dataclass
+class PhonemeEvent:
+    """
+    読み上げ（Talk）の1音素を管理するクラス
+    """
+    lyric: str          # 音素（"a", "k", "sh" など）
+    start_time: float   # 開始時間（秒）
+    duration: float     # 長さ（秒）
+    pitch_start: float  # 開始時のピッチ（MIDI番号/Hz）
+    pitch_end: float    # 終了時のピッチ（抑揚をつけるため）
+    
+    # --- 今後の「Pro」や「Talkレベル向上」のための拡張フィールド ---
+    formant_shift: float = 0.0  # 声の太さ（-1.0 ～ 1.0）
+    volume: float = 1.0         # 音量
+    speed_scale: float = 1.0    # 話速の個別調整
+
+
+
 
