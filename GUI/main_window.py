@@ -727,3 +727,27 @@ def on_export_button_clicked(self):
             # os.startfile(os.path.dirname(file_path)) # Windowsの場合
         except Exception as e:
             QMessageBox.critical(self, "エラー", f"書き出し中にエラーが発生しました：\n{str(e)}")
+
+
+
+def on_text_entered(self):
+    text = self.text_input.text()
+    if not text:
+        return
+
+    # 1. 解析を実行
+    # PhonemeEventのリストを取得
+    events = self.analyzer.analyze(text)
+
+    # 2. タイムラインを更新
+    # ユーザーが目で確認できるように即座に表示
+    self.timeline_widget.set_events(events)
+
+    # 3. 自動プレビュー（重要：ここがTalk版の利便性）
+    # 一時的なWAVファイルとして書き出し
+    temp_wav = "output/preview.wav"
+    self.engine_wrapper.render_sentence(events, temp_wav)
+    
+    # 4. 再生（音声出力）
+    self.play_audio(temp_wav)
+
