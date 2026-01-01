@@ -12,6 +12,9 @@
 
 // --- Pythonから呼び出す関数（公開API） ---
 
+VOSE_API void vose_set_formant(float shift); // -1.0(太い) ～ 1.0(細い)
+
+
 /**
  * エンジンの初期化
  * サンプリングレートなどを設定し、メモリを確保する
